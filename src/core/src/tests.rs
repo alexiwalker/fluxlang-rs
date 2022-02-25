@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod tests {
-	use crate::core::{AstBlock, AstExpression, AstFieldAccessExpression, AstFunctionCallExpression, AstFunctionDecl, AstFunctionReturnExpression, AstLiteralExpression, AstModuleDecl, AstParameterDecl, AstVariableType, AstUsingStatement, AstValueUsageExpression, AstVariableDeclarationExpression, AstVariableUsageExpression, LiteralValue, Location, Purity, SourceCodeFile, AstType};
+	use crate::ast_expressions::ast_expressions::{AstExpression, AstFieldAccessExpression, AstFunctionCallExpression, AstFunctionReturnExpression, AstLiteralExpression, AstValueUsageExpression, AstVariableDeclarationExpression, AstVariableUsageExpression};
+	use crate::ast_nodes::ast_nodes::{AstBlock, AstFunctionDecl, AstModuleDecl, AstParameterDecl, AstType, AstUsingStatement, AstVariableType, LiteralValue, Location, Purity, SourceCodeFile};
 
 	#[test]
 	fn it_works() {

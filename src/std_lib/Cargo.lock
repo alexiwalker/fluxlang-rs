@@ -8,18 +8,8 @@ name = "core"
 version = "0.1.0"
 
 [[package]]
-name = "flux"
+name = "std_lib"
 version = "0.1.0"
 dependencies = [
  "core",
- "lexer",
- "parser",
 ]
-
-[[package]]
-name = "lexer"
-version = "0.1.0"
-
-[[package]]
-name = "parser"
-version = "0.1.0"
