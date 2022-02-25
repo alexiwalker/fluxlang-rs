@@ -1,0 +1,148 @@
+export impure module someModule {
+
+    let pure doubleString : (string) -> string = f(string variable){
+    //  string format syntax: precede with #, variable set inside []
+        return #"[variable][variable]"
+    }
+
+    // f->functionCalls(nestedCall())  captures the executed statement as a function
+    // if i simply called functionCalls(nestedCall()) it would be trying to assign the result of the function call to the name printString here
+    // aka, trying to assign a string to a functionptr type, which would be incorrect
+    /** tldr it is equivalent to:
+
+    let impure printString : (string s) -> () = f(){
+        return io.printLine(someModule::doubleString(variable))
+    }
+
+    */
+    let impure printString : (string s) -> () = f->io.printLine(someModule::doubleString(variable))
+
+    // incorrect, would assign the void return type of io.printLine to otherFn, which has type (string) -> (), which would be incorrect
+    // let impure otherFn : (string s) -> () = io.printLine(someModule::doubleString(variable))
+}
+
+
+export core module {
+    let impure __alloc : (integer size) -> (ptr) = f(integer size) {
+           [#COMPILER_PLATFORM_CALL_ALLOC]
+    }
+
+    let impure __free : (ptr) -> () = f(ptr p){
+           [#COMPILER_PLATFORM_CALL_FREE]
+    }
+
+    let impure sysConsoleWrite : (string s) -> () = f(string s){
+           [#COMPILER_PLATFORM_CALL_CONSOLE_WRITE]
+    }
+
+    let pure sysDebugConsoleWrite : (string s) -> () = f(string s){
+        // if in debug, generate asm to write to the console, otherwise do nothing - this is a pure function,
+        // and IO is a side effect which is not allowed in pure code normally
+        // this is a special case
+           [#COMPILER_PLATFORM_CALL_CONSOLE_WRITE_DEBUG]
+    }
+
+}
+
+
+export impure module someclass {
+    //must declare pure because module is impure. Otherwise it would be automatically impure
+    pure class myClass {
+        let public string s;
+        let private boolean b;
+        constructor(string s) {
+            this.s = s
+            this.b = true
+        }
+
+        let pure public getString : () -> string = f->this.s
+
+        let pure public getBool : () -> boolean = f->this.b
+
+
+        // invalid, cannot use impure functions inside a pure class
+        // let impure public setBool : (boolean b) -> () = f->this.b = b
+
+    }
+
+
+    pure class point : coordinate {
+        let public integer x;
+        let public integer y;
+
+        //should i make int an alias for integer?
+        constructor(integer x, integer y) {
+            this.x = x
+            this.y = y
+        }
+
+        // an format string can be constructed but not used iff no placeholders have been used
+
+        let pure public static formatString : ()->string = f->#"[],[]"
+
+        // to format a string with empty placeholders add an array of strings or objects that implement toString(). they will be used in the order they are passed in
+        let pure public static formatPoint : (point p) -> string = f->::formatString + [p.x, p.y]
+
+        let pure public getX : () -> integer = f->this.x
+
+
+        let pure public mul : (point p) -> point = f -> new point(this.x * p.x, this.y * p.y)
+        let pure public scalar_mul : (integer i) -> point = f -> new point(this.x * i, this.y * i)
+
+        let pure public add : (point p) -> point = f -> new point(this.x + p.x, this.y + p.y)
+
+        let pure public sub : (point p) -> point = f -> new point(this.x - p.x, this.y - p.y)
+
+        let pure public div : (point p) -> point = f -> new point(this.x / p.x, this.y / p.y)
+
+        let pure public dot : (point p) -> integer = f -> this.x * p.x + this.y * p.y
+
+        let pure public cross : (point p) -> integer = f -> this.x * p.y - this.y * p.x
+
+        let pure public toString : () -> string = f->#"([this.x],[this.y])"
+
+    }
+
+    pure interface coordinate {
+        getX : () -> integer
+        getY : () -> integer
+        mul : (coordinate c) -> coordinate
+        scalar_mul : (integer i) -> coordinate
+        add : (coordinate c) -> coordinate
+        sub : (coordinate c) -> coordinate
+        div : (coordinate c) -> coordinate
+        dot : (coordinate c) -> integer
+        cross : (coordinate c) -> integer
+    }
+
+    pure implicit interface printable {
+        toString : () -> string
+    }
+
+    pure static class testing {
+    //because this is a static class, all functions are static by default
+    //do not need to use static keyword per function
+        let pure public div0 : (integer number) -> integer = f -> number / 0
+
+        // invalid: <T> -> () is not a valid type for a pure function because it has no return type
+        // without a return value, pure functions have no effect
+        let pure public test : (integer) -> integer = f(number integer){
+            try {
+            //access self static member without using self/class name: shortcut syntax
+                return ::div0(number)
+            } catch NumericError e {
+            // bind the exception to a variable
+                return 0
+            } catch Error {
+            // catch all other errors
+            // does not bind the exception to a variable
+            // exceptions are valid in pure functions because the exact same inputs will always cause the same errors
+                return 1
+            }
+        }
+
+
+    }
+
+
+}

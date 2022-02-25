@@ -1,0 +1,61 @@
+@module std::io as io
+//use impure exposes all functions and classes inside the module
+
+@module pure string
+//use pure exposes only pure functions and classes inside the module
+
+//local import syntax: use <pure/impure> module <module_name> <optional: as <alias_name>> from <module_path>
+// only imports the pure functions and classes from the module.
+// printString is not available as it is impure
+// use pure module someModule as localModule from "./example_modules"
+
+@module pure localModule = someModule from "./example_modules"
+
+impure module main {
+
+/**
+  if you have a module named main, you do not need to name the function. it can be called with the module run syntax
+
+   the module run syntax is:
+
+   provided the modules name at top, simply call that modules name
+
+   eg, this sample is the same as
+
+   impure module main{
+        let main = f(Array<string> args){
+            io.print("Hello,");
+            io.print(" World!");
+            io.print("\n");
+            io.out.flush();
+       }
+   }
+
+   the main self_ module is the entry point
+
+   but this syntax extends to all modules.
+
+   however, if the module has a self-named function and an anonymous function, the anonymous function is the module call and the named one
+   must be called with the module::module syntax (eg, path separator)
+*/
+    f(Array<string> args){
+        io.print("Hello,");
+        io.print(" World!");
+        io.print("\n");
+
+        io.printLine(exampleFunctionCall("someString"));
+
+        let v : string = "some other string";
+        io.printLine(exampleFunctionCall(v));
+
+    }
+
+    //normal function declaration syntax: let <name> : <type> = f(..args){<body>}
+    let exampleFunctionCall : (string)->string = f(string variable){
+        return string.reverse(variable)
+    }
+
+    //assigning function pointer
+    let exampleFunctionCallProxy : (string)->string = string.reverse
+
+}
