@@ -35,9 +35,9 @@ mod tests {
 				function_parameters: vec![AstParameterDecl {
 					parameter_name: Option::from("args".to_string()),
 					parameter_type: AstType::AstVariable(Box::from(AstVariableType {
-						type_name: "Array".to_string(),
+						type_name: vec!["Array".to_string()],
 						type_parameters: vec![AstType::AstVariable(Box::from(AstVariableType {
-							type_name: "string".to_string(),
+							type_name: vec!["string".to_string()],
 							type_parameters: vec![],
 							location: Location::default(),
 						}))],
@@ -90,7 +90,7 @@ mod tests {
 						AstExpression::AstVariableDeclaration(AstVariableDeclarationExpression {
 							variable_name: "v".to_string(),
 							variable_type: AstVariableType {
-								type_name: "string".to_string(),
+								type_name: vec!["string".to_string()],
 								type_parameters: vec![],
 								location: Location::default(),
 							},
@@ -141,7 +141,7 @@ mod tests {
 					function_parameters: vec![AstParameterDecl {
 						parameter_name: Option::from("variable".to_string()),
 						parameter_type: AstType::AstVariable(Box::from(AstVariableType {
-							type_name: "string".to_string(),
+							type_name: vec!["string".to_string()],
 							type_parameters: vec![],
 							location: Location::default(),
 						})),
@@ -149,7 +149,7 @@ mod tests {
 					}],
 					function_return_type: Option::from(AstType::AstVariable(Box::from(
 						AstVariableType {
-							type_name: "string".to_string(),
+							type_name: vec!["string".to_string()],
 							type_parameters: vec![],
 							location: Location::default(),
 						},
@@ -192,7 +192,7 @@ mod tests {
 					function_parameters: vec![AstParameterDecl {
 						parameter_name: Option::from("variable".to_string()),
 						parameter_type: AstType::AstVariable(Box::from(AstVariableType {
-							type_name: "string".to_string(),
+							type_name: vec!["string".to_string()],
 							type_parameters: vec![],
 							location: Location::default(),
 						})),
@@ -200,7 +200,7 @@ mod tests {
 					}],
 					function_return_type: Option::from(AstType::AstVariable(Box::from(
 						AstVariableType {
-							type_name: "string".to_string(),
+							type_name: vec!["string".to_string()],
 							type_parameters: vec![],
 							location: Location::default(),
 						},
