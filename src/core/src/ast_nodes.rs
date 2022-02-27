@@ -39,11 +39,11 @@ pub mod ast_nodes {
 				field_type: AstType::AstFunctionPointer(Box::from(AstFunctionPointerType {
 					function_pointer_type_parameters: self.function_parameters.clone(),
 					function_pointer_type_return_type: self.function_return_type.clone(),
-					location: self.location.clone()
+					location: self.location.clone(),
 				})),
 				field_purity: self.function_purity.clone(),
 				location: self.location.clone(),
-				body: Option::Some(Box::from(self.function_body.clone()))
+				body: Option::Some(Box::from(self.function_body.clone())),
 			}
 		}
 	}
@@ -56,6 +56,7 @@ pub mod ast_nodes {
 		pub class_static: bool,
 		pub class_static_fields: Vec<AstFieldDecl>,
 		pub class_fields: Vec<AstFieldDecl>,
+		pub extends_class_names: Vec<String>,
 		pub location: Location,
 	}
 	#[derive(Debug, Clone)]
@@ -68,7 +69,7 @@ pub mod ast_nodes {
 
 		// this is only relevant if the field is a function declaration
 		// OR if the field is declared as part of an interface (eg, has a definition but not an implementation)
-		pub body: Option<Box<AstBlock>>
+		pub body: Option<Box<AstBlock>>,
 	}
 	#[derive(Debug, Clone)]
 
@@ -97,7 +98,9 @@ pub mod ast_nodes {
 	#[derive(Debug, Clone)]
 
 	pub struct AstVariableType {
-		pub type_name: String,
+		//type name is a vec, usually only one element
+		//but it is a vec so we can do eg Module.Module.Module.Typename
+		pub type_name: Vec<String>,
 		pub type_parameters: Vec<AstType>,
 		pub location: Location,
 	}
@@ -109,13 +112,11 @@ pub mod ast_nodes {
 		pub location: Location,
 	}
 
-
 	#[derive(Debug, Clone)]
 	pub struct AstBlock {
 		pub block_statements: Vec<AstExpression>,
 		pub location: Location,
 	}
-
 
 	#[derive(Debug, Clone)]
 	pub enum Purity {

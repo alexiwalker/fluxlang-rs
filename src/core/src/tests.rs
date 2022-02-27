@@ -1,7 +1,14 @@
 #[cfg(test)]
 mod tests {
-	use crate::ast_expressions::ast_expressions::{AstExpression, AstFieldAccessExpression, AstFunctionCallExpression, AstFunctionReturnExpression, AstLiteralExpression, AstValueUsageExpression, AstVariableDeclarationExpression, AstVariableUsageExpression};
-	use crate::ast_nodes::ast_nodes::{AstBlock, AstFunctionDecl, AstModuleDecl, AstParameterDecl, AstType, AstUsingStatement, AstVariableType, LiteralValue, Location, Purity, SourceCodeFile};
+	use crate::ast_expressions::ast_expressions::{
+		AstExpression, AstFieldAccessExpression, AstFunctionCallExpression,
+		AstFunctionReturnExpression, AstLiteralExpression, AstValueUsageExpression,
+		AstVariableDeclarationExpression, AstVariableUsageExpression,
+	};
+	use crate::ast_nodes::ast_nodes::{
+		AstBlock, AstFunctionDecl, AstModuleDecl, AstParameterDecl, AstType, AstUsingStatement,
+		AstVariableType, LiteralValue, Location, Purity, SourceCodeFile,
+	};
 
 	#[test]
 	fn it_works() {
@@ -29,14 +36,11 @@ mod tests {
 					parameter_name: Option::from("args".to_string()),
 					parameter_type: AstType::AstVariable(Box::from(AstVariableType {
 						type_name: "Array".to_string(),
-						type_parameters: vec![
-							AstType::AstVariable(
-								Box::from(AstVariableType {
-									type_name: "string".to_string(),
-									type_parameters: vec![],
-									location: Location::default(),
-								}))
-						],
+						type_parameters: vec![AstType::AstVariable(Box::from(AstVariableType {
+							type_name: "string".to_string(),
+							type_parameters: vec![],
+							location: Location::default(),
+						}))],
 						location: Location::default(),
 					})),
 					location: Location::default(),
@@ -134,8 +138,7 @@ mod tests {
 				(AstFunctionDecl {
 					function_name: "exampleFunctionCall".to_string(),
 					function_purity: Purity::Pure,
-					function_parameters: vec![
-						AstParameterDecl {
+					function_parameters: vec![AstParameterDecl {
 						parameter_name: Option::from("variable".to_string()),
 						parameter_type: AstType::AstVariable(Box::from(AstVariableType {
 							type_name: "string".to_string(),
@@ -144,36 +147,35 @@ mod tests {
 						})),
 						location: Location::default(),
 					}],
-					function_return_type: Option::from(
-						AstType::AstVariable(
-							Box::from(AstVariableType {
-								type_name: "string".to_string(),
-								type_parameters: vec![],
-								location: Location::default(),
-							})
-						)
-					),
+					function_return_type: Option::from(AstType::AstVariable(Box::from(
+						AstVariableType {
+							type_name: "string".to_string(),
+							type_parameters: vec![],
+							location: Location::default(),
+						},
+					))),
 					function_body: AstBlock {
 						block_statements: vec![AstExpression::AstFunctionReturn(
 							AstFunctionReturnExpression {
 								return_value: Box::from(AstExpression::AstFieldAccess(
 									AstFieldAccessExpression {
-										nested_names: vec!["string".to_string(), "reverse".to_string()],
-										usage: Some(vec![
-											AstValueUsageExpression::FunctionCall(
-												AstFunctionCallExpression {
-													function_parameters: vec![
-														AstExpression::AstVariableUsage(
-															AstVariableUsageExpression {
-																variable_name: "variable".to_string(),
-																location: Location::default(),
-																usage: None,
-															},
-														),
-													],
-												},
-											)
-										]),
+										nested_names: vec![
+											"string".to_string(),
+											"reverse".to_string(),
+										],
+										usage: Some(vec![AstValueUsageExpression::FunctionCall(
+											AstFunctionCallExpression {
+												function_parameters: vec![
+													AstExpression::AstVariableUsage(
+														AstVariableUsageExpression {
+															variable_name: "variable".to_string(),
+															location: Location::default(),
+															usage: None,
+														},
+													),
+												],
+											},
+										)]),
 									},
 								)),
 								location: Location::default(),
@@ -182,7 +184,8 @@ mod tests {
 						location: Location::default(),
 					},
 					location: Location::default(),
-				}).to_field_decl(),
+				})
+				.to_field_decl(),
 				(AstFunctionDecl {
 					function_name: "exampleFunctionCallProxy".to_string(),
 					function_purity: Purity::Pure,
@@ -195,36 +198,35 @@ mod tests {
 						})),
 						location: Location::default(),
 					}],
-					function_return_type: Option::from(
-						AstType::AstVariable(
-							Box::from(AstVariableType {
-								type_name: "string".to_string(),
-								type_parameters: vec![],
-								location: Location::default(),
-							})
-						)
-					),
+					function_return_type: Option::from(AstType::AstVariable(Box::from(
+						AstVariableType {
+							type_name: "string".to_string(),
+							type_parameters: vec![],
+							location: Location::default(),
+						},
+					))),
 					function_body: AstBlock {
 						block_statements: vec![AstExpression::AstFunctionReturn(
 							AstFunctionReturnExpression {
 								return_value: Box::from(AstExpression::AstFieldAccess(
 									AstFieldAccessExpression {
-										nested_names: vec!["string".to_string(), "reverse".to_string()],
-										usage: Some(vec![
-											AstValueUsageExpression::FunctionCall(
-												AstFunctionCallExpression {
-													function_parameters: vec![
-														AstExpression::AstVariableUsage(
-															AstVariableUsageExpression {
-																variable_name: "variable".to_string(),
-																location: Location::default(),
-																usage: None,
-															},
-														),
-													],
-												},
-											)
-										]),
+										nested_names: vec![
+											"string".to_string(),
+											"reverse".to_string(),
+										],
+										usage: Some(vec![AstValueUsageExpression::FunctionCall(
+											AstFunctionCallExpression {
+												function_parameters: vec![
+													AstExpression::AstVariableUsage(
+														AstVariableUsageExpression {
+															variable_name: "variable".to_string(),
+															location: Location::default(),
+															usage: None,
+														},
+													),
+												],
+											},
+										)]),
 									},
 								)),
 								location: Location::default(),
@@ -233,7 +235,8 @@ mod tests {
 						location: Location::default(),
 					},
 					location: Location::default(),
-				}).to_field_decl(),
+				})
+				.to_field_decl(),
 			],
 			module_using_statements: vec![],
 			module_class_decls: vec![],
@@ -250,6 +253,6 @@ mod tests {
 			file_modules: vec![main_module],
 		};
 
-		println!("{:?}",file_struct);
+		println!("{:?}", file_struct);
 	}
 }

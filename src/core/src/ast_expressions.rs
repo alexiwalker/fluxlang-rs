@@ -17,7 +17,7 @@ pub mod ast_expressions {
 
 		AstIf(Box<AstIfExpression>),
 
-		AstCompilerStub(String)
+		AstCompilerStub(String),
 	}
 
 	#[derive(Debug, Clone)]
@@ -140,5 +140,4 @@ pub mod ast_expressions {
 		Named(Vec<String>),
 		Literal,
 	}
-
 }
