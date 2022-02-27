@@ -115,6 +115,27 @@ pub mod core {
 		}
 	}
 
+	pub fn _float64() -> TypeData {
+		TypeData {
+			name: "float64".to_string(),
+			stack_size: Some(8),
+			purity: Purity::Pure,
+			sort_of_type: TypeType::Primitive,
+			extends: vec![],
+		}
+	}
+
+	pub fn _float32() -> TypeData {
+		TypeData {
+			name: "float32".to_string(),
+			stack_size: Some(4),
+			purity: Purity::Pure,
+			sort_of_type: TypeType::Primitive,
+			extends: vec![],
+		}
+	}
+
+
 	pub fn _bool() -> TypeData {
 		TypeData {
 			name: "bool".to_string(),
@@ -138,7 +159,9 @@ pub mod core {
 	pub fn _string() -> TypeData {
 		TypeData {
 			name: "string".to_string(),
-			stack_size: None,
+
+			//ptr size - strings live on the heap
+			stack_size: Some(8),
 			purity: Purity::Pure,
 			sort_of_type: TypeType::Primitive,
 			extends: vec![],
@@ -180,12 +203,12 @@ pub mod core {
 	}
 
 	trait IsType {
-		fn TypeData(&self, context: &CompilationContext) -> TypeData;
+		fn type_data(&self, context: &CompilationContext) -> TypeData;
 	}
 
 
 	impl IsType for AstClassDecl {
-		fn TypeData(&mut self, context: &CompilationContext) -> TypeData {
+		fn type_data(&mut self, context: &CompilationContext) -> TypeData {
 			let mut sizeable_fields: Vec<AstFieldDecl> = vec![];
 			let mut current_ptr_sizes = 0usize;
 			for field in self.class_fields.clone().into_vec() {
@@ -226,6 +249,7 @@ pub mod core {
 			let using_statements = file.using_statements.borrow();
 
 			//todo take the fields type and resolve it down to a fully qualified type here and then lookup that type to get its size
+			//
 			// for using in using_statements.into_iter() {
 			// 	using.
 			// }
